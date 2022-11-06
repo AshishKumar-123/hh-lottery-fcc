@@ -21,8 +21,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
         subscriptionId = transactionRecipt.events[0].args.subId;
         await vrfCoordinatorV2Mock.fundSubscription(subscriptionId, VRF_SUB_FUND_AMOUNT)
-    }
-    else {
+    } else {
         vrfCoordinatorV2Address = networkConfig[chainId]["vrfCoordinatorV2"]
         subscriptionId = networkConfig[chainId]["subscriptionId"]
     }
