@@ -46,7 +46,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
             })
 
             it("emit events when player enters", async function () {
-                
+                await expect(raffle.enterRaffle({value:entranceFee})).to.emit(raffle, "RaffleEnter")
             });
         })
 
