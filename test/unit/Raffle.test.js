@@ -14,8 +14,8 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
             await deployments.fixture(["all"])
             raffle = await ethers.getContract("Raffle", deployer)
             vrfCoordinatorV2Mock = await ethers.getContract(
-                "VRFCoordinatorV2Mock",
-                deployer
+              "VRFCoordinatorV2Mock",
+              deployer
             )
             entranceFee = await raffle.getEntranceFee();
             interval = await raffle.getInterval();
@@ -55,7 +55,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                 await network.provider.send("evm_increaseTime", [interval.toNumber() + 1]);
                 await network.provider.request({ method: "evm_mine", params: [] });
 
-                await raffle.performUpkeep([])
+                await raffle.performUpkeep([]);
                 await expect(raffle.enterRaffle({ value: entranceFee })).to.be.revertedWithCustomError(raffle, "Raffle__NotOpen");
 
             })
