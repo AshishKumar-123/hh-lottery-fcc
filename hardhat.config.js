@@ -7,6 +7,7 @@ require("@nomiclabs/hardhat-etherscan")
 require("@nomiclabs/hardhat-waffle")
 require("hardhat-contract-sizer")
 
+// env needed to be added by youself with your keys and bindings
 const GOREILLY_RPC_URL = process.env.GOREILLY_RPC_URL
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
