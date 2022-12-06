@@ -60,4 +60,67 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
             })
         })
 
+        describe("checkUpKeep", async function () {
+            it("returns false if people has not sent enough ETH", async function () {
+                await network.provider.send("evm_increaseTime", [interval.toNumber() + 1]);
+                await network.provider.send("evm_mine", []);
+                const {upKeepNeeded } = await raffle.callStatic.checkUpkeep("0x");
+                assert(!upKeepNeeded)
+            });
+
+            it("returs false if raffle is not open", async function () {
+                await raffle.enterRaffle({value:entranceFee})
+                await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
+                await network.provider.send("evm_mine", [])
+                await raffle.performUpkeep([])
+                const raffleState = await raffle.getRaffleState();
+                const { upKeepNeeded } = await raffle.callStatic.checkUpkeep("0x")
+
+                assert.equal(raffleState.toString() , "1")
+                assert.equal(upKeepNeeded, false)
+            })
+
+            it("returns false if enough time has not passed", async function () {
+                await raffle.enterRaffle({value:entranceFee})
+                await network.provider.send("evm_increaseTime", [interval.toNumber() - 5])
+                await network.provider.send("evm_mine", [])
+                const { upKeepNeeded } = await raffle.callStatic.checkUpkeep("0x")
+                assert(!upKeepNeeded)
+            })
+
+            it("returns true if enough time has passed, has players, eth and is open", async function () {
+                await raffle.enterRaffle({value:entranceFee})
+                await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
+                await network.provider.send("evm_mine", [])
+                const { upKeepNeeded } = await raffle.callStatic.checkUpkeep("0x")
+                assert(upKeepNeeded)
+            })
+        })
+
+        describe("performUpKeep", async function () {
+            it("it can only if checkUpkeep is true", async function () {
+                await raffle.enterRaffle({value:entranceFee});
+                await network.provider.send("evm_increaseTime", [interval.toNumber() + 1]);
+                await network.provider.send("evm_mine", [])
+                const tx = await raffle.performUpkeep("0x");
+                assert(tx)
+            });
+
+            it("reverts if checkup is false", async function () {
+                await expect(raffle.performUpkeep("0x")).to.be.revertedWithCustomError(raffle, "Raffle__UpKeepNotNeeded")
+            });
+
+            it("updates the raffle state and emits the requestId", async function () {
+                await raffle.enterRaffle({value:entranceFee});
+                await network.provider.send("evm_increaseTime", [interval.toNumber() + 1]);
+                await network.provider.send("evm_mine", []);
+                const txResponse = await raffle.performUpkeep("0x");
+                const txReceit = txResponse.wait(1);
+                const raffleState = await raffle.getRaffleState()
+                const requestId = txReceit.events[1].args.requestId;
+                assert(requestId.toNumber() > 0);
+                assert(raffleState == 1)
+            })
+        })
+
     })
