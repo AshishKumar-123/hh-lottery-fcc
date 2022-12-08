@@ -27,7 +27,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
 
     /* State Variables */
     uint256 private immutable entranceFee;
-    address payable [] private players;
+    address payable[] private players;
     VRFCoordinatorV2Interface private immutable vrfCoordinator;
     bytes32 private immutable gasLane;
     uint64 private immutable subscriptionId;
@@ -137,7 +137,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         return players[index];
     }
 
-    function getRentWinner() public view returns(address) {
+    function getRecentWinner() public view returns(address) {
         return recentWinner;
     }
 
@@ -153,7 +153,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         return players.length;
     }
 
-    function getLatesTimestamp() public view returns(uint256) {
+    function getLatestTimestamp() public view returns(uint256) {
         return lastTimestamp;
     }
 
