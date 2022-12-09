@@ -34,6 +34,9 @@ developmentChains.includes(network.name)
                             assert.equal(recentWinner.toString(), accounts[0].address)
                             assert.equal(raffleState.toString(), "0")
                             assert.equal(winnerEndingBalance.toString(), winnerStartingBalance.add(entranceFee).toString())
+                            assert(endingTimeStamp > startingTimeStamp)
+
+                            resolve()
                         } catch (e) {
                             console.log(e)
                             reject(e)
