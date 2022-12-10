@@ -23,7 +23,8 @@ module.exports = {
     goreilly: {
       url: GOREILLY_RPC_URL,
       accounts: [PRIVATE_KEY],
-      chainId: 5
+      chainId: 5,
+      saveDeployments:true
     },
     locahost: {
       url: "http://127.0.0.1:8545",

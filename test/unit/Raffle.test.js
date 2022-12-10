@@ -194,7 +194,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                     raffle.address
                   )
                 })
-              })
+            })
         })
 
     })

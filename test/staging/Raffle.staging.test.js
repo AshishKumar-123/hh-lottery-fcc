@@ -14,21 +14,23 @@ developmentChains.includes(network.name)
             entranceFee = await raffle.getEntranceFee()
         })
 
+        //some syntax error has arised due to bracket issue which is ceating error in the staging testing in goreilly testnet
         describe("fulfillRandomWords", async function () {
             it("works with live Chainlink Keepers and Chainlink VRF, we get a random winner", async function () {
                 //enter the raffle
-                const startingTimeStamp = await raffle.getLatestTimeStamp()
+                const startingTimeStamp = await raffle.getLatestTimestamp()
                 const accounts = await ethers.getSigners()
 
                 //setup the listner before we enter the raffle 
                 await new Promise(async (resolve, reject) => {
                     raffle.once("RaffleWinnerPicked", async function () {
                         console.log("Winner Picked")
+
                         try {
                             const recentWinner = await raffle.getRecentWinner()
                             const raffleState = await raffle.getRaffleState()
                             const winnerEndingBalance = await accounts[0].getBalance()
-                            const endingTimeStamp = await raffle.getLatestTimeStamp()
+                            const endingTimeStamp = await raffle.getLatestTimestamp()
 
                             await expect(raffle.getPlayer(0)).to.be.reverted
                             assert.equal(recentWinner.toString(), accounts[0].address)
