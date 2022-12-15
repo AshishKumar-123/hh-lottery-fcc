@@ -160,15 +160,6 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                 await new Promise(async (resolve, reject) => {
                   raffle.once("RaffleWinnerPicked", async () => {
                     try {
-                      const recentWinner = await raffle.getRecentWinner()
-
-                    //   //consoling certain values for debugging purpose
-                    //   console.log(recentWinner)
-                    //   console.log(accounts[0].address)
-                    //   console.log(accounts[1].address)
-                    //   console.log(accounts[2].address)
-                    //   console.log(accounts[3].address)
-
                       const raffleState = await raffle.getRaffleState()
                       const endingTimeStamp = await raffle.getLatestTimestamp()
                       const numPlayers = await raffle.getNumberOfPlayers()
