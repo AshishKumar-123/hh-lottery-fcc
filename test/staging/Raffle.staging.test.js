@@ -47,6 +47,7 @@ developmentChains.includes(network.name)
                               reject(error)
                           }
                       })
+                      
                       // Then entering the raffle
                       console.log("Entering Raffle...")
                       const tx = await raffle.enterRaffle({ value: raffleEntranceFee })
